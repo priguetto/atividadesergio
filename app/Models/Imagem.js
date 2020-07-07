@@ -4,9 +4,9 @@
 const Model = use('Model')
 
 class Imagem extends Model {
-
+   
     imovel(){
-        return this.belongsTo('App/Models/Imovel') // cada imagem pertence a um imovél
+        return this.belongsTo('App/Models/Imovel') 
     }
 }
 

@@ -1,9 +1,0 @@
-table
-      .integer('id_imovel')
-      .unsigned()
-      .references('id')
-      .table('fotos')
-      .onUpdate('CASCATE')
-      .onDelete('CASCATE')
-      table.string('caminho').notNullable()
-    })
