@@ -20,8 +20,8 @@ class ImovelSchema extends Schema {
       table.decimal('latitude', 9,6).notNullable()
       table.decimal('longitude', 9,6).notNullable()
       table.timestamps()
-  })
-}
+    })
+  }
 
   down () {
     this.drop('imovels')

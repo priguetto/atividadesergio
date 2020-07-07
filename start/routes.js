@@ -16,9 +16,14 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
-})
 Route.resource('/imoveis', 'ImovelController').apiOnly().middleware('auth') 
-Route.post('/users', 'UserController.create').middleware()
-Route.post('/login', 'SessionController.create').middleware() 
+/* 
+Remove GET resource/create e GET resource/:id/edit
+.middleware() para proteger as rotas, e o 'auth' para autenticar 
+Necessitando passar pelo token (login) para ser autenticado
+*/
+
+
+Route.post('/usuarios', 'UserController.create').middleware()
+
+Route.post('/token', 'SessionController.create').middleware()

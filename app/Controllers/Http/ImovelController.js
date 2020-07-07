@@ -1,19 +1,21 @@
 'use strict'
 
+const Imovel = require('../../Models/Imovel')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 
-const Imovel = require('../../Models/Imovel')
 const imovel = use ('App/Models/Imovel')
 
 class ImovelController {
+
   async index ({ request }) {
 
     const { latitude, longitude } = request.all()
-                                      
-    const imoveis = await Imovel.query().proximidade( latitude, longitude, 1000 ).fetch()
+                                      // proximidade => scopeProximidade filtro la do imovel.js (palvra scope faz com que identifique como filto)
+    const imoveis = await Imovel.query().proximidade( latitude, longitude, 5000 ).fetch() // fetch() => organiza em array
 
     return imoveis;
   }
@@ -28,13 +30,13 @@ class ImovelController {
           'longitude'
     ])
 
-    data.user_id = auth.user.id 
+    data.user_id = auth.user.id // verificação de usuário
 
     const imovel = await Imovel.create(data)
     return imovel;
   }
 
-  async show ({ params }) { 
+  async show ({ params }) { /// começar criar a imagem, 37:09 min
     const imovel = await Imovel.findOrFail(params.id) 
     return imovel;
   }
@@ -50,8 +52,8 @@ class ImovelController {
       'longitude'
     ])
 
-    imovel.merge(data) 
-    await imovel.save() 
+    imovel.merge(data) // neste momento o imovel tem os novos dados
+    await imovel.save() // salva as alteração no imovel
     return imovel;
 
   }
@@ -59,8 +61,8 @@ class ImovelController {
   async destroy ({ auth, params, response }) {
     const imovel = await Imovel.findOrFail(params.id)
 
-    if (imovel.user_id !== auth.user.id) { 
-        return response.status(401).send({ error: 'você não temm permissão!' })
+    if (imovel.user_id !== auth.user.id) { // verificação pra excluir somente imóveis do próprio usuário
+        return response.status(401).send({ error: 'Você não possui autorização!' })
     }
     await imovel.delete()
   }
